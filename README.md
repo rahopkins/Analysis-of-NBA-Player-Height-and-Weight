@@ -1,6 +1,6 @@
-# Analysis-of-NBA-Player-Height-and-Weight
+# Analysis of NBA Player Height and Weight
 
-Summary:
+## Summary:
 
 Project to analyze the impact of NBA players height and weight on their performance. This analysis utilized individual player data from the last 10 full NBA seasons (13/14 to 22/23 seasons). Data was sourced from stathead.com and a public kaggle dataset.
 
@@ -14,97 +14,73 @@ The analysis was broken into 3 pieces to measure players' performance:
 
 The data was cleaned in excel and BigQuery and imported into Tableau to perform the analysis and create visualizations.
 
-Details about the process:
+## Data Sources:
+-   **[Stathead](stathead.com)**
+    -   Downloaded csv files with the following advanced statistics:
+        -   Overall impact:
+            -   [Box Plus-Minus](https://www.basketball-reference.com/about/bpm2.html)
+            -   [Win Shares per 48](https://www.basketball-reference.com/about/ws.html)
+        -   Offense:
+            -   [Offensive Rating](https://www.basketball-reference.com/about/ratings.html)
+            -   Points/game
+        -   Defense:
+            -   [Defensive Rating](https://www.basketball-reference.com/about/ratings.html)
 
--   Data Sourcing:
+    -   Data covers the last 10 full seasons (2013/14 to 2022/23 seasons)
+    -   Data includes regular season stats only, not playoffs
+    -   Each stat/metric is the average per player per season during the 10 season timeframe
+    -   Only includes players that played a minimum of 41 games a season (1/2 the season) and average at least 10 minutes/game
 
-    -   **From stathead.com**
+-   **[Kaggle](https://www.kaggle.com/datasets/justinas/nba-players-data/data)**: 
 
-        -   Key metrics:
+    -   Player stats from NBA API. Needed this to get players recorded height and weight by season.
 
-            -   Overall impact:
+## Data Cleaning:
 
-                -   BPM
+-   **Stathead.com:**
 
-                    -   <https://www.basketball-reference.com/about/bpm2.html>
+    -   Filtered player stats as follows before exporting:
 
-                -   WS/48
+        -   2013/14 to 2022/23 seasons
 
-                    -   <https://www.basketball-reference.com/about/ws.html>
+        -   Regular season only (not Playoffs)
 
-            -   Offense:
+        -   Player must have minimum of 41 games played per season
 
-                -   Offensive rating
+        -   Player must have minimum of 10 minutes/game average
 
-                    -   <https://www.basketball-reference.com/about/ratings.html>
+-   **Excel:**
 
-                -   Points/game
+    -   Combined stathead csv exports (*could only export 200 rows at a time for each query*)
 
-            -   Defense:
+    -   Players with multiple positions:
 
-                -   Defensive rating
+        -   Some players were listed as playing multiple positions (ex: C-F)
 
-                    -   <https://www.basketball-reference.com/about/ratings.html>
+        -   Edited position column to only include the first position listed for each player (which is the player's primary position)
 
-        -   Data covers the last 10 full seasons (2013/14 to 2022/23 seasons)
+    -   Edited column names in Excel before importing to BigQuery to ensure column names were understandable and only contained allowed characters
 
-        -   Data includes regular season stats only, not playoffs
+    -   Fixed some differences in player names between stathead and kaggle (ex: JJ Redick vs J.J. Redick, Kevin Knox vs Kevin Knox II)
 
-        -   Each stat/metric is the average per player per season during the 10 season timeframe
+-   **BigQuery:**
 
-        -   Only includes players that played a minimum of 41 games a season (1/2 the season) and average at least 10 minutes/game
+    -   Joined stathead data with kaggle data
 
-    -   **From Kaggle**: <https://www.kaggle.com/datasets/justinas/nba-players-data/data>
+    -   Removed accents from player names in the stathead data because the kaggle data did not have them (Ex: Luka Dončić vs Luka Doncic)
 
-        -   Player stats from NBA API. Needed this to get players recorded height and weight by season.
+## Analysis and Visualization:
 
--   Cleaning:
+-   **Tableau:**
 
-    -   **Stathead.com:**
+    -   Exported the results from the BigQuery sql query to csv and imported the data to Tableau Public
 
-        -   Filtered player stats as follows before exporting:
+    -   Created heatmap style visuals for each of the main categories and their chosen metrics
 
-            -   2013/14 to 2022/23 seasons
+    -   Combined visuals into a single [dashboard](https://public.tableau.com/app/profile/russell.hopkins/viz/NBAHeightandWeightvsPerformance/Overall)
 
-            -   Regular season only (not Playoffs)
 
-            -   Player must have minimum of 41 games played per season
-
-            -   Player must have minimum of 10 minutes/game average
-
-    -   **Excel:**
-
-        -   Combined stathead csv exports (*could only export 200 rows at a time for each query*)
-
-        -   Players with multiple positions:
-
-            -   Some players were listed as playing multiple positions (ex: C-F)
-
-            -   Edited position column to only include the first position listed for each player (which is the player's primary position)
-
-        -   Edited column names in Excel before importing to BigQuery to ensure column names were understandable and only contained allowed characters
-
-        -   Fixed some differences in player names between stathead and kaggle (ex: JJ Redick vs J.J. Redick, Kevin Knox vs Kevin Knox II)
-
-    -   **BigQuery:**
-
-        -   Accent characters in player names:
-
-            -   Removed accents from player names in the stathead data because the kaggle data did not have them (Ex: Luka Dončić vs Luka Doncic)
-
--   Analysis and Visualization:
-
-    -   **Tableau:**
-
-        -   Exported the results from the BigQuery sql query to csv and imported the data to Tableau Public
-
-        -   Created heatmap style visuals for each of the main categories and their chosen metrics
-
-        -   Combined visuals into a single dashboard:
-
-            -   https://public.tableau.com/app/profile/russell.hopkins/viz/NBAHeightandWeightvsPerformance/Overall
-
-Conclusions:
+## Conclusions:
 
 -   Each of the three categories (overall impact, offense, and defense) showed a similar trend that players with greater height and weight had more impact based on the chosen metrics.
 
