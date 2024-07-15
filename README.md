@@ -14,6 +14,8 @@ The analysis was broken into 3 pieces to measure players' performance:
 
 The data was cleaned in excel and BigQuery and imported into Tableau to perform the analysis and create visualizations.
 
+[Tableau Dashboard](https://public.tableau.com/app/profile/russell.hopkins/viz/NBAHeightandWeightvsPerformance/Overall)
+
 ## Data Sources:
 -   **[Stathead](stathead.com)**
     -   Downloaded csv files with the following advanced statistics:
